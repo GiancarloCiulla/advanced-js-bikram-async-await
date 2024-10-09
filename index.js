@@ -1,21 +1,6 @@
 // Ejercicio 1.- Declara una función getRandomPokemon que retorne un pokemon aleatorio.
 // Función para obtener la imagen y el nombre del Pokémon
-async function getImageAndName(pokemon) {
-    try {
-        let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`);
-        if (!response.ok) throw new Error("Pokémon no encontrado");
 
-        let data = await response.json();
-        let name = data.name;
-        let img = data.sprites.front_default;
-        return { name, img };
-    } catch (error) {
-        console.log(`ERROR: ${error.message}`);
-        return null; // Retornar null si hay un error
-    }
-}
-
-// Ejercicio 1: Obtener un Pokémon aleatorio (dentro de un rango de 20)
 async function getRandomPokemon() {
     const numRandom = Math.floor(Math.random() * 20) + 1; // Rango de 1 a 20
     try {
@@ -30,7 +15,7 @@ async function getRandomPokemon() {
     }
 }
 
-// Ejercicio 2: Función que retorna el nombre y la URL de la imagen de un Pokémon
+// Ejercicio 2: Declara una funcion getImageAndName que retorne el nombre y la URL de la imagen de un pokemon => (return {img, name})
 async function getImageAndName(pokemon) {
     try {
         let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`);
@@ -46,7 +31,12 @@ async function getImageAndName(pokemon) {
     }
 }
 
-// Ejercicio 3: Pintar la imagen y el nombre del Pokémon en el DOM
+// Ejercicio 3:
+//Declara una funcion printImageAndName que retorne el string necesario para pintar la imagen y el nombre del pokemon en el DOM de la siguiente forma:
+{/* <section>
+     <img src="url de imagen" alt="nombre del pokemon">
+    <h1>Nombre del pokemon</h1>
+</section>  */}
 async function printImageAndName() {
     const pokemon = await getRandomPokemon(); // Obtener un Pokémon aleatorio
     if (!pokemon) return `<section><h1>No se pudo obtener un Pokémon aleatorio.</h1></section>`;
@@ -74,7 +64,7 @@ printImageAndName().then((cadenaPokemon) => {
     container.innerHTML = cadenaPokemon;
 });
 
-// Ejercicio 4: Obtener la URL de la imagen de un perro aleatorio
+// Ejercicio 4: Declara una función getRandomDogImage que retorne la url de la imagen de un perro aleatorio
 async function getRandomDogImage() {
     try {
         let response = await fetch(`https://dog.ceo/api/breeds/image/random`);
@@ -93,7 +83,7 @@ getRandomDogImage().then((urlImagenPerro) => {
     console.log(urlImagenPerro);
 });
 
-// Ejercicio 5: Obtener la URL de la imagen de un Pokémon aleatorio
+// Ejercicio 5: Declara una función getRandomPokemonImage que retorne la url de la imagen de un pokemon aleatorio.
 async function getRandomPokemonImage() {
     try {
         const pokemonName = await getRandomPokemon(); // Obtener un Pokémon aleatorio
@@ -195,11 +185,6 @@ getRandomCharacter().then(character => {
 
 //Ejercicio 8.
 //- Declara una función getRandomCharacterInfo que retorne de un personaje su imagen, nombre, episodios en los que aparece y el nombre del primer episodio en el que aparece + fecha de estreno, tendrás que hacer otro fetch para llegar a los ultimos datos. Formato de retorno => (return {img, name, episodes, firstEpisode, dateEpisode})
-// Función para obtener la información de un personaje aleatorio
-// Función para obtener la información de un personaje aleatorio
-// Función para obtener la información de un personaje aleatorio
-// Función para obtener la información de un personaje aleatorio
-// Función para obtener la información de un personaje aleatorio
 // Función para obtener la información de un personaje aleatorio
 async function getRandomCharacterInfo() {
     const totalCharacters = 826; // Total de personajes en la API
