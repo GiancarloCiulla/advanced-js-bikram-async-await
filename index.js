@@ -186,50 +186,43 @@ getRandomCharacter().then(character => {
 //Ejercicio 8.
 //- Declara una función getRandomCharacterInfo que retorne de un personaje su imagen, nombre, episodios en los que aparece y el nombre del primer episodio en el que aparece + fecha de estreno, tendrás que hacer otro fetch para llegar a los ultimos datos. Formato de retorno => (return {img, name, episodes, firstEpisode, dateEpisode})
 // Función para obtener la información de un personaje aleatorio
-async function getRandomCharacterInfo() {
-    const totalCharacters = 826; // Total de personajes en la API
-    const randomId = Math.floor(Math.random() * totalCharacters) + 1; // ID aleatorio entre 1 y 826
+async function getRandomCharacterInfo(){
+
+    const numRandom = Math.floor(Math.random() * 826) + 1;
 
     try {
-        // Obtener datos del personaje
-        const characterResponse = await fetch(`https://rickandmortyapi.com/api/character/${randomId}`);
-        if (!characterResponse.ok) {
-            throw new Error('Error fetching character');
+        let response = await fetch(`https://rickandmortyapi.com/api/character/${numRandom}`);
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
         }
-        const character = await characterResponse.json();
-
-        // Verificar que el personaje tenga episodios
-        if (!character.episode || character.episode.length === 0) {
-            throw new Error('No episodes found for this character');
+        let data = await response.json();
+        let primerEpisodio = data.episode[0];
+        
+        let responseEpisodio_1 = await fetch(primerEpisodio);
+        if (!responseEpisodio_1.ok) {
+            throw new Error(`Error: ${responseEpisodio_1.status}`);
         }
+        let dataEpisodio1 = await responseEpisodio_1.json();
 
-        // Obtener el primer episodio en el que aparece
-        const firstEpisodeUrl = character.episode[0]; // URL del primer episodio
-        const episodeResponse = await fetch(firstEpisodeUrl);
-        if (!episodeResponse.ok) {
-            throw new Error('Error fetching episode');
-        }
-        const episode = await episodeResponse.json();
+        let img = data.image; // cadena
+        let name = data.name; // cadena
+        let episodes = data.episode; // array
+        let firstEpisode = dataEpisodio1.name;
+        let dateEpisode = dataEpisodio1.air_date;
 
-        // Retornar la información requerida en el formato esperado
-        return {
-            img: character.image,            // Imagen del personaje
-            name: character.name,            // Nombre del personaje
-            episodes: character.episode.length, // Cantidad de episodios
-            firstEpisode: episode.name,      // Nombre del primer episodio
-            dateEpisode: episode.air_date     // Fecha de estreno del primer episodio
-        };
+        return {img, name, episodes, firstEpisode, dateEpisode}
     } catch (error) {
-        console.error('Error:', error);
-        return null; // Devuelve null en caso de error
+        console.log(`ERROR: ${error.stack}`);
     }
 }
-
-// Ejemplo de uso
-getRandomCharacterInfo().then(info => {
-    if (info) {
-        console.log(info);
-    } else {
-        console.log('No se pudo obtener la información del personaje.');
-    }
+getRandomCharacterInfo().then((data) => {
+    console.log("Ejercicio 8");
+    console.log(`
+        Imagen: ${data.img}
+        Nombre: ${data.name}
+        Episodio: ${data.episodes.join(" y ")}
+        Primer Episodio: ${data.firstEpisode} 
+        Fecha de Emisión: ${data.dateEpisode}
+    `);
+    console.log("****************");
 });
